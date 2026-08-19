@@ -1,1 +1,291 @@
 @import "tailwindcss";
+
+@theme {
+  --color-ink-950: #060d18;
+  --color-ink-900: #0a1626;
+  --color-ink-800: #0e1d31;
+  --color-ink-700: #15283f;
+  --color-ink-600: #1f3752;
+  --color-line: #1c3049;
+  --color-fog: #e9f2f8;
+  --color-mist: #9db4c8;
+  --color-dim: #6c849c;
+  --color-teal-400: #2fd9b4;
+  --color-teal-300: #6ceccb;
+  --color-amber-400: #ffb454;
+  --color-sky-400: #6fb7ff;
+  --font-display: "Space Grotesk", "Segoe UI", sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ink-950);
+  color: var(--color-fog);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(47, 217, 180, 0.28);
+  color: #eafff7;
+}
+
+/* ---------- ambient layers ---------- */
+.bg-blueprint {
+  background-image:
+    linear-gradient(rgba(111, 183, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(111, 183, 255, 0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 35%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 35%, transparent 78%);
+}
+
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  opacity: 0.05;
+}
+
+/* ---------- reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-left {
+  transform: translateX(-32px);
+}
+.reveal-left.is-in {
+  transform: translateX(0);
+}
+.reveal-right {
+  transform: translateX(32px);
+}
+.reveal-right.is-in {
+  transform: translateX(0);
+}
+
+/* line-mask reveal for big headlines */
+.line-mask {
+  display: block;
+  overflow: hidden;
+}
+.line-mask > span {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.line-mask.is-in > span {
+  transform: translateY(0);
+}
+
+/* ---------- marquee ---------- */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee-x 30s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ---------- terminal ---------- */
+@keyframes caret-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0;
+  }
+}
+.term-caret {
+  animation: caret-blink 1s step-end infinite;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(47, 217, 180, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(47, 217, 180, 0);
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 2s ease-out infinite;
+}
+
+@keyframes drift-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+.drift-slow {
+  animation: drift-y 7s ease-in-out infinite;
+}
+.drift-slower {
+  animation: drift-y 11s ease-in-out infinite reverse;
+}
+
+/* ---------- underline link ---------- */
+.link-draw {
+  position: relative;
+}
+.link-draw::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 2px;
+  width: 100%;
+  background: var(--color-teal-400);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-draw:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ---------- buttons ---------- */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(100deg, #6ceccb, #2fd9b4 55%, #1db894);
+  transform: translateX(-101%);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-primary:hover::before {
+  transform: translateX(0);
+}
+
+/* dashed connector for timeline */
+.v-dash {
+  background-image: linear-gradient(to bottom, var(--color-line) 55%, transparent 45%);
+  background-size: 2px 12px;
+  background-repeat: repeat-y;
+}
+
+/* service row hover rail */
+.svc-row {
+  transition:
+    background-color 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.svc-row:hover {
+  transform: translateX(10px);
+}
+
+/* card lift */
+.lift {
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+.lift:hover {
+  transform: translateY(-6px);
+  border-color: rgba(47, 217, 180, 0.45);
+  box-shadow: 0 24px 48px -24px rgba(3, 12, 22, 0.9);
+}
+
+/* form fields */
+.field {
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
+}
+.field:focus {
+  outline: none;
+  border-color: rgba(47, 217, 180, 0.7);
+  box-shadow: 0 0 0 3px rgba(47, 217, 180, 0.12);
+  background-color: rgba(14, 29, 49, 0.9);
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #081120;
+}
+::-webkit-scrollbar-thumb {
+  background: #1f3752;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2c4a6d;
+}
+
+/* ---------- page enter ---------- */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-enter {
+  animation: page-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .line-mask > span {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .marquee-track,
+  .drift-slow,
+  .drift-slower,
+  .pulse-dot,
+  .term-caret {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
