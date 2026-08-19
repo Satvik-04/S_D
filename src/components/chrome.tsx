@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { NAV, CONTACT, SERVICES } from "../data";
 import { LogoMark, IconMenu, IconX, IconPhone, IconMail, IconPin, IconRocket } from "./icons";
+import DownloadSource from "./DownloadSource";
 
 /* ================= ambient background ================= */
 export function Ambient() {
@@ -207,8 +208,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-[0.2em] text-dim sm:flex-row sm:items-center">
+        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-[0.2em] text-dim lg:flex-row lg:items-center">
           <p>© 2026 Teztecch · Nagpur, India</p>
+          <DownloadSource />
           <p>
             <span className="text-teal-400">$</span> teztecch --status{" "}
             <span className="text-teal-300">operational</span>

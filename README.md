@@ -31,7 +31,11 @@ npm run typecheck  # TypeScript check
 
 ## Package as a ZIP
 
-A zero-dependency script is included:
+**From the live site** — click **"Download source .zip"** in the footer of any page.
+The archive is assembled in your browser (no server needed) and saved as
+`teztecch-source.zip`.
+
+**From a terminal** — a zero-dependency script is included:
 
 ```bash
 node scripts/zip-project.mjs
